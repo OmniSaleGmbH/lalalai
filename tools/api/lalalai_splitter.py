@@ -182,7 +182,7 @@ def main():
     parser.add_argument('--license', type=str, required=True, help='License key')
     parser.add_argument('--input', type=str, required=True, help='Input directory or a file')
     parser.add_argument('--output', type=str, default=CURRENT_DIR_PATH, help='Output directory')
-    parser.add_argument('--stem', type=str, default='vocals', choices=['vocals', 'drum', 'bass', 'piano', 'electric_guitar', 'acoustic_guitar', 'synthesizer', 'voice'], help='Stem option. Phoenix is currenlty works only with stems: vocals, drum, bass, voice, electric_guitar, acoustic_guitar. Choose Cassiopeia network for the rest')
+    parser.add_argument('--stem', type=str, default='vocals', choices=['vocals', 'drum', 'bass', 'piano', 'electric_guitar', 'acoustic_guitar', 'synthesizer', 'voice'], help='Stem option. Voice stem is not supported by Cassiopeia')
     parser.add_argument('--filter', type=int, default=1, choices=[0, 1, 2], help='0 (mild), 1 (normal), 2 (aggressive)')
     parser.add_argument('--splitter', type=str, default='phoenix', choices=['phoenix', 'cassiopeia'], help='The type of neural network used to split audio')
 
