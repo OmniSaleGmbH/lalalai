@@ -13,9 +13,10 @@ lalalai_splitter.py is an example of interacting with the LALAL.AI API as descri
                             choices: 
                                 ['vocals', 'drum', 'bass',
                                  'piano', 'electric_guitar', 
-                                'acoustic_guitar', 'synthesizer', 'voice']
+                                'acoustic_guitar', 'synthesizer', 'voice',
+                                'strings', 'wind']
                             Stem option:
-                            vocals, drum, bass, voice, electric_guitar, acoustic_guitar. Voice stem is not supported by Cassiopeia
+                            vocals, drum, bass, voice, electric_guitar, acoustic_guitar. Stems voice, strings, wind are not supported by Cassiopeia
                       --filter <post-processing filter> \
                             default: 1
                             choices:
