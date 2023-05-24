@@ -3,7 +3,7 @@
 Extract vocal, accompaniment and various instruments from any audio and video
 High-quality stem splitting based on the world's #1 AI-powered technology.
 
-## About
+### About
 We are a team of specialists in the fields of artificial intelligence, machine learning, mathematical optimization, and digital signal processing. **Our goal is to make working with audio and video easier** for musicians, sound producers, music engineers, video bloggers, streamers, transcribers, translators, journalists, and many other professionals and creatives.
 
 In 2020, we developed a unique neural network called **Rocknet** using 20TB of training data to extract instrumentals and voice tracks from songs. In 2021, we created Cassiopeia, a next-generation solution superior to Rocknet that allowed improved splitting results with significantly fewer audio artifacts.
@@ -24,5 +24,13 @@ At the end of 2022, we created a [desktop version of LALAL.AI](https://www.lalal
 
 In the two years since LALAL.AI was created, the project has grown tremendously, as has our workforce. Since the Rocknet neural network launch in 2020, the LALAL.AI team has doubled in size. We work hard to create unique high-quality solutions and we always have a lot of ideas and developments in store. Keep your eyes peeled for new possibilities and improvements!
 
-### Omnisale GmbH
+### Legal Entity
+OmniSale GmbH
 Rigistrasse 3, 6300, Zug, Switzerland.
+
+### Forks and third party tools
+
+* Modified Python tool for extract multiple stems for only one upload https://github.com/lehenbauer/lalalai (by @lehenbauer)
+* GUI frontend for Python script. Currently for Mac only https://github.com/lehenbauer/unmixer (by @lehenbauer)
+
+
