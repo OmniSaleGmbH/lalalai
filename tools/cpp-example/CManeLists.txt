@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(lalalai_upload VERSION 0.1.0)
+
+include(CTest)
+enable_testing()
+
+find_package(CURL REQUIRED)
+
+
+add_executable(lalalai_upload lalalai_upload.cpp)
+
+if(CURL_FOUND)
+    target_include_directories(lalalai_upload PRIVATE ${CURL_INCLUDE_DIRS})
+    target_link_libraries(lalalai_upload ${CURL_LIBRARIES})
+else()
+    message(FATAL_ERROR "CURL library not found")
+endif()
+
+target_compile_features(lalalai_upload PRIVATE cxx_std_17)
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
