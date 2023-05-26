@@ -28,6 +28,11 @@ In the two years since LALAL.AI was created, the project has grown tremendously,
 OmniSale GmbH
 Rigistrasse 3, 6300, Zug, Switzerland.
 
+### Examples of API usage
+* [Python tool](/tools/api/)
+* [Node-js uploading example](/tools/nodejs-example/)
+* [C++ uploading example](/tools/cpp-example/)
+
 ### Forks and third party tools
 
 * Modified Python tool for extract multiple stems for only one upload https://github.com/lehenbauer/lalalai (by @lehenbauer)
