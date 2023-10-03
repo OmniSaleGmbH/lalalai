@@ -15,9 +15,9 @@ lalalai_splitter.py is an example of interacting with the LALAL.AI API as descri
                                  'piano', 'electric_guitar', 
                                 'acoustic_guitar', 'synthesizer', 'voice',
                                 'strings', 'wind']
-                            Stem option:
-                            vocals, drum, bass, voice, electric_guitar, acoustic_guitar, synthesizer, strings, wind.
-                            Stems voice, strings, wind are not supported by Cassiopeia
+                            Stem selection option.
+                            Note: the stems "vocal" and "voice" support the fourth generation of
+                            the neural network named "Orion" (see also the --splitter option)
                       --filter <post-processing filter> \
                             default: 1
                             choices:
@@ -26,6 +26,7 @@ lalalai_splitter.py is an example of interacting with the LALAL.AI API as descri
                       --splitter <splitter type>
                             default: 'phoenix'
                             choices: 
-                                ['phoenix', 'cassiopeia']
-                            The type of neural network used to split audio
+                                ['phoenix', 'orion']
+                            Neural network selection option. Currently, the "Orion" neural
+                            network only supports the stems "vocal" and "voice".
 ```
