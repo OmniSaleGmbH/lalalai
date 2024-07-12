@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 
 # Copyright (c) 2021 LALAL.AI
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,13 +26,15 @@ import json
 import os
 import sys
 import time
-from argparse import ArgumentParser
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, SUPPRESS
 from urllib.parse import quote, unquote, urlencode
 from urllib.request import urlopen, Request
 
 
-CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 URL_API = "https://www.lalal.ai/api/"
+
+_orion_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar')
+_phoenix_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar', 'synthesizer', 'strings', 'wind')
 
 
 def update_percent(pct):
@@ -71,12 +73,22 @@ def upload_file(file_path, license):
                 raise RuntimeError(upload_result["error"])
 
 
-def split_file(file_id, license, stem, filter_type, splitter):
+def split_file(file_id, license, stem, splitter, enhanced_processing, noise_cancelling):
     url_for_split = URL_API + "split/"
     headers = {
         "Authorization": f"license {license}",
     }
-    query_args = {'id': file_id, 'stem': stem, 'filter': filter_type, 'splitter': splitter}
+    query_args = {
+        'id': file_id,
+        'stem': stem,
+        'splitter': splitter
+    }
+
+    if enhanced_processing is not None:
+        query_args['enhanced_processing_enabled'] = enhanced_processing
+    if noise_cancelling is not None:
+        query_args['noise_cancelling_level'] = noise_cancelling
+
     encoded_args = urlencode(query_args).encode('utf-8')
     request = Request(url_for_split, encoded_args, headers=headers)
     with urlopen(request) as response:
@@ -101,10 +113,14 @@ def check_file(file_id):
 
         task_state = check_result["task"]["state"]
 
-        if task_state == "error":
+        if task_state == "success":
+            update_percent("Progress: 100%\n")
+            return check_result["split"]
+
+        elif task_state == "error":
             raise RuntimeError(check_result["task"]["error"])
 
-        if task_state == "progress":
+        elif task_state == "progress":
             progress = int(check_result["task"]["progress"])
             if progress == 0 and not is_queueup:
                 print("Queue up...")
@@ -112,11 +128,8 @@ def check_file(file_id):
             elif progress > 0:
                 update_percent(f"Progress: {progress}%")
 
-        if task_state == "success":
-            update_percent("Progress: 100%\n")
-            stem_track_url = check_result["split"]["stem_track"]
-            back_track_url = check_result["split"]["back_track"]
-            return stem_track_url, back_track_url
+        else:
+            raise NotImplementedError('Unknown track state', task_state)
 
         time.sleep(15)
 
@@ -144,55 +157,64 @@ def download_file(url_for_download, output_path):
     return file_path
 
 
-def batch_process_for_file(license, input_path, output_path, stem, filter_type, splitter):
+def batch_process_for_file(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling):
     try:
         print(f'Uploading the file "{input_path}"...')
         file_id = upload_file(file_path=input_path, license=license)
         print(f'The file "{input_path}" has been successfully uploaded (file id: {file_id})')
 
         print(f'Processing the file "{input_path}"...')
-        split_file(file_id, license, stem, filter_type, splitter)
-        stem_track_url, back_track_url = check_file(file_id)
+        split_file(file_id, license, stem, splitter, enhanced_processing, noise_cancelling)
+        split_result = check_file(file_id)
 
-        print(f'Downloading the stem track file "{stem_track_url}"...')
-        downloaded_file = download_file(stem_track_url, output_path)
-        print(f'The stem track file has been downloaded to "{downloaded_file}"')
-
-        print(f'Downloading the back track file "{back_track_url}"...')
-        downloaded_file = download_file(back_track_url, output_path)
-        print(f'The back track file has been downloaded to "{downloaded_file}"')
+        for url in (split_result['stem_track'], split_result['back_track']):
+            print(f'Downloading the track file "{url}"...')
+            downloaded_file = download_file(url, output_path)
+            print(f'The track file has been downloaded to "{downloaded_file}"')
 
         print(f'The file "{input_path}" has been successfully split')
     except Exception as err:
         print(f'Cannot process the file "{input_path}": {err}')
 
 
-def batch_process(license, input_path, output_path, stem, filter_type, splitter):
+def batch_process(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling):
     if os.path.isfile(input_path):
-        batch_process_for_file(license, input_path, output_path, stem, filter_type, splitter)
+        batch_process_for_file(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling)
     else:
         for path in os.listdir(input_path):
-            path = os.path.join(input_path, path)
-            if os.path.isfile(path):
-                batch_process_for_file(license, path, output_path, stem, filter_type, splitter)
+            full_path = os.path.join(input_path, path)
+            if os.path.isfile(full_path):
+                batch_process_for_file(license, full_path, output_path, stem, splitter, enhanced_processing, noise_cancelling)
+
+
+def _validate_stem(args):
+    if args.splitter == 'orion' and args.stem not in _orion_stems:
+        raise ValueError(f'Invalid stem option: {args.stem}. Should be one of {_orion_stems}')
+    if args.splitter == 'phoenix' and args.stem not in _phoenix_stems:
+        raise ValueError(f'Invalid stem option: {args.stem}. Should be one of {_phoenix_stems}')
 
 
 def main():
-    parser = ArgumentParser(description='Lalalai splitter')
-    parser.add_argument('--license', type=str, required=True, help='License key')
-    parser.add_argument('--input', type=str, required=True, help='Input directory or a file')
-    parser.add_argument('--output', type=str, default=CURRENT_DIR_PATH, help='Output directory')
-    parser.add_argument('--stem', type=str, default='vocals', choices=['vocals', 'drum', 'bass', 'piano', 'electric_guitar', 'acoustic_guitar', 'synthesizer', 'voice', 'strings', 'wind'],
-                        help='Stem selection option. Note: the stems "vocal" and "voice" support the fourth generation of the neural network named "Orion" (see also the --splitter option)')
-    
-    parser.add_argument('--filter', type=int, default=1, choices=[0, 1, 2], help='0 (mild), 1 (normal), 2 (aggressive)')
-    parser.add_argument('--splitter', type=str, default='phoenix', choices=['orion', 'phoenix'],
-                        help='Neural network selection option. Currently, the "Orion" neural network only supports the stems "vocal" and "voice".')
+    parser = ArgumentParser(description='Lalalai splitter', formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--license', required=True, type=str, default=SUPPRESS, help='license key')
+    parser.add_argument('--input', required=True, type=str, default=SUPPRESS, help='input directory or a file')
+    parser.add_argument('--output', type=str, default=os.path.dirname(os.path.realpath(__file__)), help='output directory')
+    parser.add_argument('--splitter', type=str, default='orion', choices=['phoenix', 'orion'], help='the type of neural network used to split audio. automatically selects most efficient splitter if no value provided')
+    parser.add_argument('--stem', type=str, default='vocals', help=f'orion stems: {_orion_stems}; phoenix stems: {_phoenix_stems}')
+    parser.add_argument('--enhanced-processing', type=bool, default=False, choices=[True, False], help='all stems, except "voice"')
+    parser.add_argument('--noise-cancelling', type=int, default=1, choices=[0, 1, 2], help='noise cancelling level for "voice" stem: (0: mild, 1: normal, 2: aggressive)')
 
     args = parser.parse_args()
 
+    _validate_stem(args)
+
+    if args.stem == 'voice':
+        args.enhanced_processing = None
+    else:
+        args.noise_cancelling = None
+
     os.makedirs(args.output, exist_ok=True)
-    batch_process(args.license, args.input, args.output, args.stem, args.filter, args.splitter)
+    batch_process(args.license, args.input, args.output, args.stem, args.splitter, args.enhanced_processing, args.noise_cancelling)
 
 
 if __name__ == '__main__':
