@@ -176,9 +176,6 @@ def list_voice_packs(license):
             name = pack["name"]
                 
             print(f"{pack_id:<50} {name:<50}")
-        
-        print(f"\nReady to use packs: {len(ready_packs)}")
-        print(f"Total packs: {len(result['packs'])}")
 
 
 def _update_percent(pct):
