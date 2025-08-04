@@ -60,7 +60,13 @@ Parameters:
     --output               Output directory (default: current script directory)
     --voice_pack_id        Voice pack ID (default: "ALEX_KAYE")
                           Available voice packs: https://www.lalal.ai/api/voice_packs/list/
-    --accent_enhance       Enhance accent (default: true)
-    --pitch_shifting       Enable pitch shifting (default: true)  
-    --dereverb_enabled     Remove echo/reverb (default: false)
+    --accent_enhance       Accent processing (default: true)
+                          true: Match target voice accent
+                          false: Keep original accent
+    --pitch_shifting       Tonality/pitch processing (default: true)
+                          true: Match target voice tonality
+                          false: Keep original tone
+    --dereverb_enabled     Echo/reverb processing (default: false)
+                          true: Remove echo/reverb from audio
+                          false: Restore original echo/reverb
 ```
