@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright (c) 2021 LALAL.AI
+# Copyright (c) 2025 LALAL.AI
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import sys
+
+if sys.version_info >= (3, 13):
+    raise RuntimeError("This script requires Python 3.12 or earlier for cgi module compatibility. Actual version is: ", sys.version_info)
+
 
 import cgi
 import json
 import os
-import sys
 import time
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, SUPPRESS
 from urllib.parse import quote, unquote, urlencode
@@ -74,7 +78,7 @@ def upload_file(file_path, license):
                 raise RuntimeError(upload_result["error"])
 
 
-def split_file(file_id, license, stem, splitter, enhanced_processing, noise_cancelling):
+def split_file(file_id, license, stem, splitter, enhanced_processing, noise_cancelling, dereverb_enabled):
     url_for_split = URL_API + "split/"
     headers = {
         "Authorization": f"license {license}",
@@ -82,13 +86,17 @@ def split_file(file_id, license, stem, splitter, enhanced_processing, noise_canc
     query_args = {
         'id': file_id,
         'stem': stem,
-        'splitter': splitter
+        'splitter': splitter,
+        'dereverb_enabled': dereverb_enabled,
     }
 
     if enhanced_processing is not None:
         query_args['enhanced_processing_enabled'] = enhanced_processing
     if noise_cancelling is not None:
         query_args['noise_cancelling_level'] = noise_cancelling
+
+    # What you send to server
+    print("Split task request body:", query_args)
 
     encoded_args = urlencode(query_args).encode('utf-8')
     request = Request(url_for_split, encoded_args, headers=headers)
@@ -124,6 +132,9 @@ def check_file(file_id):
         elif task_state == "progress":
             progress = int(check_result["task"]["progress"])
             if progress == 0 and not is_queueup:
+                if 'presets' in check_result and 'split' in check_result['presets']:
+                    # Settings extracted by server
+                    print("Using settings", check_result['presets']['split'])
                 print("Queue up...")
                 is_queueup = True
             elif progress > 0:
@@ -133,6 +144,22 @@ def check_file(file_id):
             raise NotImplementedError('Unknown track state', task_state)
 
         time.sleep(15)
+
+
+def _strtobool(val: str) -> bool:
+    """Convert a string representation of truth to true (1) or false (0).
+
+    True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
+    are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
+    'val' is anything else.
+    """
+    val = val.lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    else:
+        raise ValueError(f"invalid bool value {val!r}")
 
 
 def get_filename_from_content_disposition(header):
@@ -158,14 +185,14 @@ def download_file(url_for_download, output_path):
     return file_path
 
 
-def batch_process_for_file(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling):
+def batch_process_for_file(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling, dereverb_enabled):
     try:
         print(f'Uploading the file "{input_path}"...')
         file_id = upload_file(file_path=input_path, license=license)
         print(f'The file "{input_path}" has been successfully uploaded (file id: {file_id})')
 
         print(f'Processing the file "{input_path}"...')
-        split_file(file_id, license, stem, splitter, enhanced_processing, noise_cancelling)
+        split_file(file_id, license, stem, splitter, enhanced_processing, noise_cancelling, dereverb_enabled)
         split_result = check_file(file_id)
 
         for url in (split_result['stem_track'], split_result['back_track']):
@@ -178,14 +205,14 @@ def batch_process_for_file(license, input_path, output_path, stem, splitter, enh
         print(f'Cannot process the file "{input_path}": {err}')
 
 
-def batch_process(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling):
+def batch_process(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling, dereverb_enabled):
     if os.path.isfile(input_path):
-        batch_process_for_file(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling)
+        batch_process_for_file(license, input_path, output_path, stem, splitter, enhanced_processing, noise_cancelling, dereverb_enabled)
     else:
         for path in os.listdir(input_path):
             full_path = os.path.join(input_path, path)
             if os.path.isfile(full_path):
-                batch_process_for_file(license, full_path, output_path, stem, splitter, enhanced_processing, noise_cancelling)
+                batch_process_for_file(license, full_path, output_path, stem, splitter, enhanced_processing, noise_cancelling, dereverb_enabled)
 
 
 def _validate_stem(args):
@@ -221,8 +248,9 @@ def main():
     parser.add_argument('--output', type=str, default=os.path.dirname(os.path.realpath(__file__)), help='output directory')
     parser.add_argument('--splitter', type=str, choices=['phoenix', 'orion','perseus'], help=splitter_help)
     parser.add_argument('--stem', type=str, default='vocals', help='List of comma-separated stem options. One of ("vocals", "voice", "drum", "bass", "piano", "electric_guitar, "acoustic_guitar", "synthesizer", "strings", "wind")')
-    parser.add_argument('--enhanced-processing', type=bool, default=False, choices=[True, False], help='all stems, except "voice"')
+    parser.add_argument('--enhanced-processing', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='all stems, except "voice"')
     parser.add_argument('--noise-cancelling', type=int, default=1, choices=[0, 1, 2], help='noise cancelling level for "voice" stem: (0: mild, 1: normal, 2: aggressive)')
+    parser.add_argument('--dereverb_enabled', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='remove echo')
 
     args = parser.parse_args()
 
@@ -235,7 +263,7 @@ def main():
         args.noise_cancelling = None
 
     os.makedirs(args.output, exist_ok=True)
-    batch_process(args.license, args.input, args.output, args.stem, args.splitter, args.enhanced_processing, args.noise_cancelling)
+    batch_process(args.license, args.input, args.output, args.stem, args.splitter, args.enhanced_processing, args.noise_cancelling, args.dereverb_enabled)
 
 
 if __name__ == '__main__':
