@@ -51,7 +51,8 @@ Parameters:
                                    [--voice_pack_id <voice pack id>] \
                                    [--accent_enhance <true/false>] \
                                    [--pitch_shifting <true/false>] \
-                                   [--dereverb_enabled <true/false>]
+                                   [--dereverb_enabled <true/false>] \
+                                   [--list]
 
 Parameters:
     --license              User license key (required)
@@ -69,4 +70,5 @@ Parameters:
     --dereverb_enabled     Echo/reverb processing (default: false)
                           true: Remove echo/reverb from audio
                           false: Restore original echo/reverb
+    --list                 List available voice packs and exit
 ```

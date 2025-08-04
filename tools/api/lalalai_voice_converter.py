@@ -150,6 +150,37 @@ def process_file(license, file_id, output_path, params: VoiceChangeParameters):
         raise
 
 
+def list_voice_packs(license):
+    """List available voice packs for the user"""
+    url = URL_API + "voice_packs/list/"
+    headers = {
+        "Authorization": f"license {license}",
+    }
+    
+    request = Request(url, headers=headers)
+    with urlopen(request) as response:
+        result = json.load(response)
+        if result["status"] == "error":
+            raise RuntimeError(result["error"])
+        
+        # Filter only ready_to_use packs
+        ready_packs = [pack for pack in result["packs"] if pack["ready_to_use"]]
+        
+        # Print table header
+        print(f"{'pack_id':<50} {'name':<50}")
+        print("-" * 105)
+        
+        # Print each pack
+        for pack in ready_packs:
+            pack_id = pack["pack_id"]
+            name = pack["name"]
+                
+            print(f"{pack_id:<50} {name:<50}")
+        
+        print(f"\nReady to use packs: {len(ready_packs)}")
+        print(f"Total packs: {len(result['packs'])}")
+
+
 def _update_percent(pct):
     pct = str(pct)
     sys.stdout.write("\b" * len(pct))
@@ -208,8 +239,14 @@ def main():
     parser.add_argument('--accent_enhance', type=lambda x: bool(_strtobool(x)), default=True, choices=[True, False],)
     parser.add_argument('--pitch_shifting', type=lambda x: bool(_strtobool(x)), default=True, choices=[True, False],)
     parser.add_argument('--dereverb_enabled', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='remove echo')
+    parser.add_argument('--list', action='store_true', help='list available voice packs and exit')
 
     args = parser.parse_args()
+
+    # Handle list command first
+    if args.list:
+        list_voice_packs(args.license)
+        return
 
     if args.uploaded_file_id and args.input:
         raise ValueError("You cannot specify both --uploaded_file_id and --input. Use one of them.")
