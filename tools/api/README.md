@@ -6,6 +6,7 @@ This directory contains examples of interacting with the LALAL.AI API as describ
 
 - `lalalai_splitter.py` - Audio source separation using various stems and neural networks
 - `lalalai_voice_converter.py` - Voice conversion using different voice packs
+- `lalalai_voice_train.py` - Complete voice pack training workflow: file upload, training, monitoring, and automatic activation
 
 ## lalalai_splitter.py Usage
 
@@ -71,4 +72,41 @@ Parameters:
                           true: Remove echo/reverb from audio
                           false: Restore original echo/reverb
     --list                 List available voice packs and exit
+```
+
+## lalalai_voice_train.py Usage
+
+```bash
+% python3 lalalai_voice_train.py --license <user license> \
+                                --input <files or directories> \
+                                --pack-name <voice pack name>
+
+Parameters:
+    --license              User license key (required)
+    --input                Input files or directories (required, can specify multiple)
+                          Supports audio formats: .wav, .mp3, .flac, .aac, .ogg, .m4a, .wma
+                          Can be individual files or directories containing audio files
+    --pack-name            Name for the voice pack to be created (required)
+
+Process:
+    1. Automatically collects all audio files from specified paths (recursively from directories)
+    2. Uploads files with progress tracking and ID display
+    3. Starts voice pack training with default avatar
+    4. Monitors training progress (checks every 60 seconds, 6-hour timeout)
+    5. Automatically activates the voice pack upon training completion
+    6. Verifies voice pack is ready for use
+    7. Displays final voice_pack_id for voice conversion usage
+
+Examples:
+    # Train from individual files
+    python3 lalalai_voice_train.py --license YOUR_LICENSE --input audio1.wav audio2.mp3 --pack-name "MyVoice"
+    
+    # Train from directory (finds all audio files recursively)
+    python3 lalalai_voice_train.py --license YOUR_LICENSE --input ./voice_samples/ --pack-name "StudioVoice"
+    
+    # Train from mixed sources
+    python3 lalalai_voice_train.py --license YOUR_LICENSE --input ./samples/ extra.wav --pack-name "MixedVoice"
+
+Note: Script handles the complete workflow automatically - no manual intervention required.
+All progress and IDs are displayed in console output.
 ```
