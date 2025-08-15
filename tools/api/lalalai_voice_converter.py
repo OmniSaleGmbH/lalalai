@@ -41,7 +41,7 @@ URL_API = "https://www.lalal.ai/api/"
 @dataclass
 class VoiceChangeParameters:
     voice_pack_id: str
-    accent_enhance: bool
+    accent_enhance: float
     pitch_shifting: int
     dereverb_enabled: bool
 
@@ -114,7 +114,7 @@ def check_file(file_id):
             progress = int(check_result["task"]["progress"])
             if progress == 0 and preparation_phase:
                 if 'presets' in check_result and 'split' in check_result['presets']:
-                    print("Applying settings", check_result['presets']['split'])
+                    print("Using settings", check_result['presets']['split'])
                 print("Queue up...")
                 preparation_phase = False
             elif progress > 0:
@@ -156,25 +156,25 @@ def list_voice_packs(license):
     headers = {
         "Authorization": f"license {license}",
     }
-    
+
     request = Request(url, headers=headers)
     with urlopen(request) as response:
         result = json.load(response)
         if result["status"] == "error":
             raise RuntimeError(result["error"])
-        
+
         # Filter only ready_to_use packs
         ready_packs = [pack for pack in result["packs"] if pack["ready_to_use"]]
-        
+
         # Print table header
         print(f"{'pack_id':<50} {'name':<50}")
         print("-" * 105)
-        
+
         # Print each pack
         for pack in ready_packs:
             pack_id = pack["pack_id"]
             name = pack["name"]
-                
+
             print(f"{pack_id:<50} {name:<50}")
 
 
@@ -233,7 +233,7 @@ def main():
     parser.add_argument('--uploaded_file_id', required=False, type=str, default=None, help='uploaded file id')
     parser.add_argument('--output', type=str, default=os.path.dirname(os.path.realpath(__file__)), help='output directory')
     parser.add_argument('--voice_pack_id', type=str, default="ALEX_KAYE", help='pack_id in status "ready_to_use", choose from https://www.lalal.ai/api/voice_packs/list/ (must be logged in)')
-    parser.add_argument('--accent_enhance', type=lambda x: bool(_strtobool(x)), default=True, choices=[True, False],)
+    parser.add_argument('--accent_enhance', type=float, default=1, help='enable accent enhance (0.0-1.0, 1.0 by default)')
     parser.add_argument('--pitch_shifting', type=lambda x: bool(_strtobool(x)), default=True, choices=[True, False],)
     parser.add_argument('--dereverb_enabled', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='remove echo')
     parser.add_argument('--list', action='store_true', help='list available voice packs and exit')
