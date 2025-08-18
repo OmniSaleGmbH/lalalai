@@ -49,7 +49,7 @@ Parameters:
                                    [--uploaded_file_id <file id>] \
                                    [--output <output directory>] \
                                    [--voice_pack_id <voice pack id>] \
-                                   [--accent_enhance <true/false>] \
+                                   [--accent_enhance <0.0-1.0>] \
                                    [--pitch_shifting <true/false>] \
                                    [--dereverb_enabled <true/false>] \
                                    [--list]
@@ -61,9 +61,8 @@ Parameters:
     --output               Output directory (default: current script directory)
     --voice_pack_id        Voice pack ID (default: "ALEX_KAYE")
                           Available voice packs: https://www.lalal.ai/api/voice_packs/list/
-    --accent_enhance       Accent processing (default: true)
-                          true: Match target voice accent
-                          false: Keep original accent
+    --accent_enhance       Accent processing strength (default: 1.0)
+                          Range: 0.0-1.0, where 0.0 = keep original accent, 1.0 = match target voice accent
     --pitch_shifting       Tonality/pitch processing (default: true)
                           true: Match target voice tonality
                           false: Keep original tone
