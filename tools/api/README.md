@@ -6,6 +6,7 @@ This directory contains examples of interacting with the LALAL.AI API as describ
 
 - `lalalai_splitter.py` - Audio source separation using various stems and neural networks
 - `lalalai_voice_converter.py` - Voice conversion using different voice packs
+- `lalalai_demuser.py` - Clean voice from background music
 
 ## lalalai_splitter.py Usage
 
@@ -70,4 +71,17 @@ Parameters:
                           true: Remove echo/reverb from audio
                           false: Restore original echo/reverb
     --list                 List available voice packs and exit
+```
+
+## lalalai_demuser.py Usage
+
+```bash
+% python3 lalalai_demuser.py --license <user license> \
+                             --input <input directory or file> \
+                             [--output <output directory>] \
+
+Parameters:
+    --license              User license key (required)
+    --input                Input directory or file (required)
+    --output               Output directory (default: current script directory)
 ```
