@@ -37,6 +37,7 @@ from urllib.request import urlopen, Request
 
 URL_API = "https://www.lalal.ai/api/"
 
+_andromeda_stems = ('vocals', 'voice')
 _perseus_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar')
 _orion_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar')
 _phoenix_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar', 'synthesizer', 'strings', 'wind')
@@ -216,6 +217,8 @@ def batch_process(license, input_path, output_path, stem, splitter, enhanced_pro
 
 
 def _validate_stem(args):
+    if args.splitter == 'andromeda' and args.stem not in _andromeda_stems:
+        raise ValueError(f'{args.splitter} splitter does not support stem "{args.stem}". Should be one of {_andromeda_stems}')
     if args.splitter == 'perseus' and args.stem not in _perseus_stems:
         raise ValueError(f'{args.splitter} splitter does not support stem "{args.stem}". Should be one of {_perseus_stems}')
     if args.splitter == 'orion' and args.stem not in _orion_stems:
@@ -225,6 +228,8 @@ def _validate_stem(args):
 
 
 def _get_latest_available_splitter(stem):
+    if stem in _andromeda_stems:
+        return 'andromeda'
     if stem in _perseus_stems:
         return 'perseus'
     if stem in _orion_stems:
@@ -234,8 +239,9 @@ def _get_latest_available_splitter(stem):
 
 splitter_help = f'''
 The type of neural network used to split audio.
-Possible values are 'phoenix', 'orion' or 'perseus'.
+Possible values are 'phoenix', 'orion', 'perseus' or 'andromeda'.
 If parameter is not provided - automatically choose most effective splitter for selected stem.
+Andromeda stems: {_andromeda_stems}.
 Perseus stems: {_perseus_stems}.
 Orion stems: {_orion_stems}.
 Phoenix stems: {_phoenix_stems}.'''
@@ -246,9 +252,9 @@ def main():
     parser.add_argument('--license', required=True, type=str, default=SUPPRESS, help='license key')
     parser.add_argument('--input', required=True, type=str, default=SUPPRESS, help='input directory or a file')
     parser.add_argument('--output', type=str, default=os.path.dirname(os.path.realpath(__file__)), help='output directory')
-    parser.add_argument('--splitter', type=str, choices=['phoenix', 'orion','perseus'], help=splitter_help)
+    parser.add_argument('--splitter', type=str, choices=['phoenix', 'orion', 'perseus', 'andromeda'], help=splitter_help)
     parser.add_argument('--stem', type=str, default='vocals', help='List of comma-separated stem options. One of ("vocals", "voice", "drum", "bass", "piano", "electric_guitar, "acoustic_guitar", "synthesizer", "strings", "wind")')
-    parser.add_argument('--enhanced-processing', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='all stems, except "voice"')
+    parser.add_argument('--enhanced-processing', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='all stems, except "voice". Andromeda splitter ignores this parameter.')
     parser.add_argument('--noise-cancelling', type=int, default=1, choices=[0, 1, 2], help='noise cancelling level for "voice" stem: (0: mild, 1: normal, 2: aggressive)')
     parser.add_argument('--dereverb_enabled', type=lambda x: bool(_strtobool(x)), default=False, choices=[True, False], help='remove echo')
 
