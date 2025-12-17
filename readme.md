@@ -22,7 +22,30 @@ LALAL.AI's innovative technologies are used not only for stem splitting. In July
 
 At the end of 2022, we created a [desktop version of LALAL.AI](https://www.lalal.ai/blog/lalalai-desktop-app/). The application enabled users to split audio and videos into stems in one convenient place on their Windows, macOS and Linux computers.
 
-In the two years since LALAL.AI was created, the project has grown tremendously, as has our workforce. Since the Rocknet neural network launch in 2020, the LALAL.AI team has doubled in size. We work hard to create unique high-quality solutions and we always have a lot of ideas and developments in store. Keep your eyes peeled for new possibilities and improvements!
+In 2023, we developed mobile applications for iOS and Android, making LALAL.AI and all its features readily available on the go. We also trained and released Orion, our fourth-generation neural network that takes a unique approach to audio separation. The network not only extracts stems from the mix but also enhances them in the process, eliminating errors and audible imperfections for the best possible quality results.
+
+In 2024, LALAL.AI continued the trajectory of innovation with several significant updates. We introduced Enhanced Processing and Noise Canceling Level features in March, allowing users greater control over audio separation for vocals and instruments while providing customizable noise reduction options. In April, we launched the Voice Changer, enabling users to transform songs and vocal recordings with various artist and character voice clones. August brought the introduction of the Echo & Reverb Remover, a tool designed to enhance audio clarity by effectively removing unwanted echoes and reverberations from recordings.
+
+By September 2024, we released the highly anticipated Lead & Back Vocal Splitter, simplifying lead and backing vocal isolation. The launch of the Perseus neural network shortly thereafter marked a significant leap in vocal extraction technology. Utilizing advanced transformer models similar to those behind OpenAI's ChatGPT, Perseus offers unprecedented clarity in vocal isolation while minimizing artifacts. Throughout 2024, Perseus was updated to support not only vocal and instrumental isolation but also the extraction of drums and bass.
+
+LALAL.AI remains dedicated to pushing the boundaries of AI-powered audio processing while continuously improving our products. We work hard to create fresh, high-quality solutions, and we always have a lot of ideas and developments in store. Keep your eyes peeled for new possibilities and improvements!
+
+### Core Technology
+
+**Neural Networks:**
+- **Andromeda** (2025): Latest neural network for stem separation, setting new quality benchmarks
+- **Perseus** (2024): Advanced transformer-based technology for vocal and instrumental extraction with enhanced processing modes
+- **Phoenix** (2022): State-of-the-art audio source separation technology
+- **Cassiopeia** (2021): Next-generation solution with reduced audio artifacts
+- **Rocknet** (2020): Initial neural network trained on 20TB of data
+
+**Services:**
+- Stem Splitter: Up to 10-stem separation including vocals, instrumentals, drums, bass, guitars, piano, synthesizer, wind, and string instruments
+- Voice Cloner: Create custom voice clones with API support
+- Voice Changer: Accent and tonality control with echo estimation and intelligent routing
+- Lead & Back Vocal Splitter: Separate lead and backing vocals
+- Echo & Reverb Remover: Remove echo and reverberation from audio
+- Voice Cleaner: Remove background noise and unwanted sounds
 
 ### Legal Entity
 OmniSale GmbH
