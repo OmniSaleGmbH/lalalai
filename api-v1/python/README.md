@@ -1,6 +1,6 @@
 # LALAL.AI API v1 - Python Examples
 
-This directory contains Python examples for interacting with the LALAL.AI API v1 as described in [https://www.lalal.ai/api/help/](https://www.lalal.ai/api/help/)
+This directory contains Python examples for interacting with the LALAL.AI API v1 as described in [https://www.lalal.ai/api/v1/docs/](https://www.lalal.ai/api/v1/docs/)
 
 ## Requirements
 
