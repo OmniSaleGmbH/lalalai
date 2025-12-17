@@ -8,7 +8,7 @@ We are a team of specialists in the fields of artificial intelligence, machine l
 
 In 2020, we developed a unique neural network called **Rocknet** using 20TB of training data to extract instrumentals and voice tracks from songs. In 2021, we created Cassiopeia, a next-generation solution superior to Rocknet that allowed improved splitting results with significantly fewer audio artifacts.
 
-Starting as a 2-stem splitter, LALAL.AI has grown significantly during 2021. In addition to **vocal and instrumental**, the service was enhanced with the capability to extract musical instruments – **drums, bass, acoustic guitar, electric guitar, piano, and synthesizer**. As a result of this upgrade, LALAL.AI became the [world's first 8-stem splitter](https://www.lalal.ai/blog/lalal-ai-adds-the-8th-stem-for-separation-synthesizer/). In the same year, we also presented [business solutions](https://www.lalal.ai/business-solutions/), enabling owners of sites, services and applications to integrate our stem-splitting technology into their environments via API.
+Starting as a 2-stem splitter, LALAL.AI has grown significantly during 2021. In addition to **vocal and instrumental**, the service was enhanced with the capability to extract musical instruments – **drums, bass, acoustic guitar, electric guitar, piano, and synthesizer**. As a result of this upgrade, LALAL.AI became the [world’s first 8-stem splitter](https://www.lalal.ai/blog/lalal-ai-adds-the-8th-stem-for-separation-synthesizer/). In the same year, we also presented [business solutions](https://www.lalal.ai/business-solutions/), enabling owners of sites, services and applications to integrate our stem-splitting technology into their environments via API.
 
 Only available in English prior to 2021, LALAL.AI was translated into 7 other languages – Chinese, French, German, Italian, Japanese, Korean, and Spanish. Furthermore, we added new payment methods to make LALAL.AI easier to acquire and more accessible to people worldwide.
 
@@ -16,9 +16,9 @@ In 2022, we created and released [Phoenix](https://www.lalal.ai/blog/phoenix-neu
 
 Although Phoenix exclusively handled vocal/instrumental isolation at first, its powerful technology allowed us to continually introduce new stems on a regular basis. Throughout the year we trained Phoenix to extract all musical instruments that Cassiopeia supported.
 
-We also added two brand new stems, wind and string instruments, which no other service offered. With that update, LALAL.AI broke the record again and became the [world's first 10-stem splitter](https://www.lalal.ai/blog/wind-string-instruments/).
+We also added two brand new stems, wind and string instruments, which no other service offered. With that update, LALAL.AI broke the record again and became the [world’s first 10-stem splitter](https://www.lalal.ai/blog/wind-string-instruments/).
 
-LALAL.AI's innovative technologies are used not only for stem splitting. In July of 2022, we introduced [Voice Cleaner](https://www.lalal.ai/blog/voice-cleaner/), a noise cancellation solution that removes background music, mic rumble, vocal plosives, and many other types of extraneous noises from video and audio recordings.
+LALAL.AI’s innovative technologies are used not only for stem splitting. In July of 2022, we introduced [Voice Cleaner](https://www.lalal.ai/blog/voice-cleaner/), a noise cancellation solution that removes background music, mic rumble, vocal plosives, and many other types of extraneous noises from video and audio recordings.
 
 At the end of 2022, we created a [desktop version of LALAL.AI](https://www.lalal.ai/blog/lalalai-desktop-app/). The application enabled users to split audio and videos into stems in one convenient place on their Windows, macOS and Linux computers.
 
@@ -28,16 +28,14 @@ In the two years since LALAL.AI was created, the project has grown tremendously,
 OmniSale GmbH
 Rigistrasse 3, 6300, Zug, Switzerland.
 
-## API Versions
+### Examples of API usage
+* [Python tool](/tools/api/)
+* [Node-js uploading example](/tools/nodejs-example/)
+* [C++ uploading example](/tools/cpp-example/)
 
-### API v1 (Current)
-Current API implementation with improved architecture and examples.
+### Forks and third party tools
 
-**Python Examples:**
-* [Python tools and scripts](api-v1/python/)
-
-### API v0 (Deprecated)
-Legacy API examples and documentation available in [api-v0(deprecated)](api-v0(deprecated)/).
-
-**Forks and third party tools** (using deprecated API, not updated for a long time and missing new splitters):
+* Modified Python tool for extract multiple stems for only one upload https://github.com/lehenbauer/lalalai (by @lehenbauer)
 * GUI frontend for Python script. Currently for Mac only https://github.com/lehenbauer/unmixer (by @lehenbauer)
+
+
