@@ -3,7 +3,26 @@
 Extract vocal, accompaniment and various instruments from any audio and video
 High-quality stem splitting based on the world's #1 AI-powered technology.
 
-### About
+## API
+
+### API V1 (Recommended)
+A stable, convenient API with a richer feature set, an OpenAPI specification, and a Swagger-like tool for browsing and trying endpoints.
+
+**Python Examples:**
+* [Python tools and scripts](api-v1/python/)
+
+**Documentation:**
+* [Human-readable docs](https://www.lalal.ai/api/v1/docs/)
+* [OpenAPI Specification](https://www.lalal.ai/api/v1/openapi.json)
+
+### API V0 (Deprecated)
+**Code Examples:**
+* Legacy API examples and documentation available in [api-v0(deprecated)](api-v0(deprecated)/).
+
+**Documentation:**
+* [Human-readable docs](https://www.lalal.ai/api/help/)
+
+## About
 We are a team of specialists in the fields of artificial intelligence, machine learning, mathematical optimization, and digital signal processing. **Our goal is to make working with audio and video easier** for musicians, sound producers, music engineers, video bloggers, streamers, transcribers, translators, journalists, and many other professionals and creatives.
 
 In 2020, we developed a unique neural network called **Rocknet** using 20TB of training data to extract instrumentals and voice tracks from songs. In 2021, we created Cassiopeia, a next-generation solution superior to Rocknet that allowed improved splitting results with significantly fewer audio artifacts.
@@ -30,7 +49,7 @@ By September 2024, we released the highly anticipated Lead & Back Vocal Splitter
 
 LALAL.AI remains dedicated to pushing the boundaries of AI-powered audio processing while continuously improving our products. We work hard to create fresh, high-quality solutions, and we always have a lot of ideas and developments in store. Keep your eyes peeled for new possibilities and improvements!
 
-### Core Technology
+## Core Technology
 
 **Neural Networks:**
 - **Andromeda** (2025): Latest neural network for stem separation, setting new quality benchmarks
@@ -47,20 +66,9 @@ LALAL.AI remains dedicated to pushing the boundaries of AI-powered audio process
 - Echo & Reverb Remover: Remove echo and reverberation from audio
 - Voice Cleaner: Remove background noise and unwanted sounds
 
-### Legal Entity
+## Legal Entity
 OmniSale GmbH
 Rigistrasse 3, 6300, Zug, Switzerland.
-
-## API Versions
-
-### API v1 (Current)
-Current API implementation with improved architecture and examples.
-
-**Python Examples:**
-* [Python tools and scripts](api-v1/python/)
-
-### API v0 (Deprecated)
-Legacy API examples and documentation available in [api-v0(deprecated)](api-v0(deprecated)/).
 
 **Forks and third party tools** (using deprecated API, not updated for a long time and missing new splitters):
 * GUI frontend for Python script. Currently for Mac only https://github.com/lehenbauer/unmixer (by @lehenbauer)

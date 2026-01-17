@@ -56,9 +56,9 @@ Parameters:
 ```
 
 **API Endpoints Used:**
-- `/split/voice_clean/` - For "voice" stem (voice cleaning with noise cancellation)
-- `/split/demuser/` - For "music" stem (background music removal)
-- `/split/stem_separator/` - For all instrumental stems (vocals, drum, bass, piano, guitars, etc.)
+- `/api/v1/split/voice_clean/` - For "voice" stem (voice cleaning with noise cancellation)
+- `/api/v1/split/demuser/` - For "music" stem (background music removal)
+- `/api/v1/split/stem_separator/` - For all instrumental stems (vocals, drum, bass, piano, guitars, etc.)
 
 ## lalalai_voice_converter.py Usage
 
@@ -100,10 +100,10 @@ Parameters:
 ```
 
 **API Endpoints Used:**
-- `/upload/` - Upload audio file (returns source_id)
-- `/change_voice/` - Start voice conversion task
-- `/check/` - Check task status and get results
-- `/voice_packs/list/` - Get available voice packs
+- `/api/v1/upload/` - Upload audio file (returns source_id)
+- `/api/v1/change_voice/` - Start voice conversion task
+- `/api/v1/check/` - Check task status and get results
+- `/api/v1/voice_packs/list/` - Get available voice packs
 
 ## lalalai_demuser.py Usage
 
@@ -125,23 +125,23 @@ Parameters:
 ```
 
 **API Endpoints Used:**
-- `/upload/` - Upload audio file
-- `/split/demuser/` - Remove background music from voice (extracts "music" stem)
-- `/check/` - Check task status
-- `/delete/` - Clean up files from LALAL.AI storage
+- `/api/v1/upload/` - Upload audio file
+- `/api/v1/split/demuser/` - Remove background music from voice (extracts "music" stem)
+- `/api/v1/check/` - Check task status
+- `/api/v1/delete/` - Clean up files from LALAL.AI storage
 
 ## API v1 Workflow
 
 All scripts follow this pattern:
 
-1. **Upload** - Upload file via `/upload/` endpoint (returns `source_id`)
+1. **Upload** - Upload file via `/api/v1/upload/` endpoint (returns `source_id`)
 2. **Process** - Start processing task (split or voice conversion) using the `source_id`
-3. **Check** - Poll `/check/` endpoint until task completes
+3. **Check** - Poll `/api/v1/check/` endpoint until task completes
 4. **Download** - Download result files from provided URLs
 5. **Delete** (optional) - Clean up files from LALAL.AI storage
 
 ## Notes
 
 - All endpoints use `X-License-Key` header for authentication
-- Processing is asynchronous - use `/check/` to poll for completion
+- Processing is asynchronous - use `/api/v1/check/` to poll for completion
 - Results include direct download URLs for output tracks
