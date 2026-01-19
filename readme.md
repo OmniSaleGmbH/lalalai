@@ -52,8 +52,9 @@ LALAL.AI remains dedicated to pushing the boundaries of AI-powered audio process
 ## Core Technology
 
 **Neural Networks:**
-- **Andromeda** (2025): Latest neural network for stem separation, setting new quality benchmarks
+- **Andromeda** (2025): Latest neural network for stem separation, raising the bar worldwide and setting new quality benchmarks
 - **Perseus** (2024): Advanced transformer-based technology for vocal and instrumental extraction with enhanced processing modes
+- **Orion** (2023): Takes a unique approach to audio separation, using an enhanced stem-splitting technique
 - **Phoenix** (2022): State-of-the-art audio source separation technology
 - **Cassiopeia** (2021): Next-generation solution with reduced audio artifacts
 - **Rocknet** (2020): Initial neural network trained on 20TB of data
