@@ -37,7 +37,7 @@ from urllib.request import urlopen, Request
 
 URL_API = "https://www.lalal.ai/api/"
 
-_andromeda_stems = ('vocals', 'voice')
+_andromeda_stems = ('vocals', 'voice', 'drum', 'bass')
 _perseus_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar')
 _orion_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar')
 _phoenix_stems = ('vocals', 'voice', 'drum', 'piano', 'bass', 'electric_guitar', 'acoustic_guitar', 'synthesizer', 'strings', 'wind')
