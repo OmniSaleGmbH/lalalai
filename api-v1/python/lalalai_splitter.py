@@ -62,7 +62,7 @@ class VoiceCleanParams:
     source_id: str
     noise_cancelling_level: int  # 0, 1, or 2
     dereverb_enabled: bool = False
-    splitter: str | None = None  # orion, perseus, phoenix, andromeda
+    splitter: str = "auto"  # auto, orion, perseus, phoenix, andromeda, lynx
 
 
 @dataclass
@@ -82,7 +82,7 @@ class StemSeparatorParams:
     extraction_level: str  # deep_extraction or clear_cut
     dereverb_enabled: bool = False
     multivocal: str | None = None  # lead_back for vocals
-    splitter: str | None = None  # orion, perseus, phoenix, andromeda
+    splitter: str = "auto"  # auto, orion, perseus, phoenix, andromeda
 
 
 def _update_percent(pct):
@@ -130,11 +130,10 @@ def split_voice_clean(params: VoiceCleanParams, license: str) -> str:
     presets = {
         "stem": "voice",
         "noise_cancelling_level": params.noise_cancelling_level,
+        "splitter": params.splitter,
     }
     if params.dereverb_enabled:
         presets["dereverb_enabled"] = True
-    if params.splitter:
-        presets["splitter"] = params.splitter
 
     split_params = {
         "source_id": params.source_id,
@@ -181,13 +180,12 @@ def split_stem_separator(params: StemSeparatorParams, license: str) -> str:
     presets = {
         "stem": params.stem,
         "extraction_level": params.extraction_level,
+        "splitter": params.splitter,
     }
     if params.dereverb_enabled:
         presets["dereverb_enabled"] = True
     if params.multivocal and params.stem == "vocals":
         presets["multivocal"] = params.multivocal
-    if params.splitter:
-        presets["splitter"] = params.splitter
 
     split_params = {
         "source_id": params.source_id,
@@ -544,9 +542,9 @@ def main():
     parser.add_argument(
         "--splitter",
         type=str,
-        default=None,
-        choices=["orion", "perseus", "phoenix", "andromeda"],
-        help="Splitter model to use. If None - the latest available model for the selected stems will be used.",
+        default="auto",
+        choices=["auto", "orion", "perseus", "phoenix", "andromeda", "lynx", "lyra"],
+        help="Splitter model to use. 'auto' selects the latest available model for the selected stems.",
     )
     parser.add_argument(
         "--delete",

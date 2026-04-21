@@ -52,6 +52,7 @@ LALAL.AI remains dedicated to pushing the boundaries of AI-powered audio process
 ## Core Technology
 
 **Neural Networks:**
+- **Lynx** (2026): The fastest neural network for voice clean, outperforming all predecessors in speed and separation quality
 - **Andromeda** (2025): Latest neural network for stem separation, raising the bar worldwide and setting new quality benchmarks
 - **Perseus** (2024): Advanced transformer-based technology for vocal and instrumental extraction with enhanced processing modes
 - **Orion** (2023): Takes a unique approach to audio separation, using an enhanced stem-splitting technique
