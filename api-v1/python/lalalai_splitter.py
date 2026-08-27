@@ -47,6 +47,7 @@ _stem_separator_stems = (
     "drum",
     "piano",
     "bass",
+    "guitar",
     "electric_guitar",
     "acoustic_guitar",
     "synthesizer",

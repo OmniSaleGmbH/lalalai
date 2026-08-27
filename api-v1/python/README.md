@@ -33,8 +33,8 @@ Parameters:
     --input                Input directory or file (required)
     --output               Output directory (default: current script directory)
     --stem                 Stem to extract (default: "vocals")
-                          choices: voice, music, vocals, drum, bass, piano, 
-                                  electric_guitar, acoustic_guitar, synthesizer, 
+                          choices: voice, music, vocals, drum, bass, piano, guitar,
+                                  electric_guitar, acoustic_guitar, synthesizer,
                                   strings, wind
                           Note: 
                           - "voice" uses /split/voice_clean/ endpoint (for voice cleaning)
@@ -49,8 +49,14 @@ Parameters:
                                   clear_cut (cleaner, less detail)
     --multivocal           For "vocals" stem only - separate lead and backing vocals
                           choices: lead_back (splits into lead and backing)
-    --splitter             Splitter model to use (default: auto-select latest)
-                          choices: orion, perseus, phoenix, andromeda
+    --splitter             Splitter model to use (default: "auto")
+                          choices: auto, orion, perseus, phoenix, andromeda, lynx, lyra
+                          "auto" picks the latest model available for the selected stem
+                          - Andromeda: vocals, voice, drum, piano, bass, guitar
+                          - Perseus / Orion: vocals, voice, drum, piano, bass, electric_guitar, acoustic_guitar
+                          - Phoenix: all of the above plus synthesizer, strings, wind
+                          - Lynx: voice only (voice_clean)
+                          - Lyra: music only (demuser)
     --delete               Delete files from LALAL.AI storage after download (default: false)
                           choices: true, false
 ```
