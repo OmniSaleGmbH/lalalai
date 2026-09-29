@@ -40,8 +40,21 @@ Parameters:
                           - "voice" uses /split/voice_clean/ endpoint (for voice cleaning)
                           - "music" uses /split/demuser/ endpoint (removes music from voice)
                           - All others use /split/stem_separator/ endpoint
-    --noise-cancelling     Noise cancelling level for "voice" stem only (default: 1)
-                          choices: 0 (mild), 1 (normal), 2 (aggressive)
+                          Choosing a stem:
+                          - "vocals" extracts vocals from music (songs);
+                            "voice" extracts speech from non-musical noise
+                            (crowd, traffic, office)
+                          - Pick the stem that matches the task most precisely:
+                            guitars of any type → "guitar", not "electric_guitar",
+                            even if only an electric guitar is expected
+                          - Exception: a broader stem on a newer splitter wins —
+                            "guitar" (andromeda) beats "electric_guitar" (perseus)
+                            unless an acoustic guitar must be kept apart
+    --noise-cancelling     How much quiet voice is raised after noise removal,
+                          "voice" stem only (default: 1)
+                          choices: 0 (mild: keeps it as is),
+                                   1 (normal: raises it moderately),
+                                   2 (aggressive: raises it noticeably more)
     --dereverb-enabled     Remove echo/reverb from audio (default: false)
                           choices: true, false
     --extraction-level     Extraction quality for stem_separator stems (default: deep_extraction)
@@ -52,6 +65,9 @@ Parameters:
     --splitter             Splitter model to use (default: "auto")
                           choices: auto, orion, perseus, phoenix, andromeda, lynx, lyra
                           "auto" picks the latest model available for the selected stem
+                          Generations: phoenix (v3) → orion (v4) → perseus (v5) → andromeda (v6);
+                          newer gives higher quality, but on specific content an older one
+                          occasionally does better — test on your own material
                           - Andromeda: vocals, voice, drum, piano, bass, guitar
                           - Perseus / Orion: vocals, voice, drum, piano, bass, electric_guitar, acoustic_guitar
                           - Phoenix: all of the above plus synthesizer, strings, wind
